@@ -25,3 +25,4 @@ C:\Users\pc\source\repos\ATMSystem\ATMSystem\bin\Debug\net8.0\runtimes\win-x64\n
 C:\Users\pc\source\repos\ATMSystem\ATMSystem\bin\Debug\net8.0\runtimes\win-x86\native\SQLite.Interop.dll
 C:\Users\pc\source\repos\ATMSystem\ATMSystem\obj\Debug\net8.0\ATMSystem.csproj.AssemblyReference.cache
 C:\Users\pc\source\repos\ATMSystem\ATMSystem\obj\Debug\net8.0\ATMSystem.csproj.Up2Date
+C:\Users\pc\source\repos\ATMSystem\ATMSystem\obj\Debug\net8.0\ATMSystem.sourcelink.json
