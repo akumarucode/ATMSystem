@@ -6,11 +6,14 @@ internal class Program
     private static void Main(string[] args)
     {
 
+
         // Specify the path to your SQLite database file
-        string databasePath = @"C:\Users\pc\source\repos\ATMSystem\ATM_DB.db";
+        string databasePath = @"ATM_DB.db";
+        string basePath = AppDomain.CurrentDomain.BaseDirectory;
+        string fullPath = System.IO.Path.Combine(basePath, databasePath);
 
         // Connection string for SQLite
-        string connectionString = $"Data Source={databasePath};Version=3;";
+        string connectionString = $"Data Source={fullPath};Version=3;";
 
         // SQL query to check if data
         string checkCard = "SELECT COUNT(*) FROM Users WHERE CardID = @CardID";
@@ -211,7 +214,8 @@ internal class Program
 
                                                                                                     if (transferAmount > 0)
                                                                                                     {
-                                                                                                        using (SQLiteCommand command8 = new SQLiteCommand(callBalance, connection))
+                                                                                                        using (
+                                                                                                            SQLiteCommand command8 = new SQLiteCommand(callBalance, connection))
                                                                                                         {
                                                                                                             // Add parameter to the command
                                                                                                             command8.Parameters.AddWithValue("@CardID", cardID);
@@ -368,6 +372,7 @@ internal class Program
                                                             double doubleCurrentBalance;
                                                             if (double.TryParse(currentBalance, out doubleCurrentBalance))
                                                             {
+
                                                                 Console.WriteLine("Enter amount:");
                                                                 string withdrawAmountString = Console.ReadLine();
 
@@ -376,27 +381,36 @@ internal class Program
 
                                                                 if (double.TryParse(withdrawAmountString, out double withdrawAmount))
                                                                 {
-                                                                    if (withdrawAmount > 0)
+
+                                                                    if (doubleCurrentBalance > withdrawAmount)
                                                                     {
-
-                                                                        double afterWithdraw = doubleCurrentBalance - withdrawAmount;
-                                                                        Console.WriteLine("Please take the money, your new balance is RM " + afterWithdraw);
-
-                                                                        using (SQLiteCommand command5 = new SQLiteCommand(updateBalance, connection))
+                                                                        if (withdrawAmount > 0)
                                                                         {
-                                                                            command5.Parameters.AddWithValue("@newBalance", afterWithdraw);
-                                                                            command5.Parameters.AddWithValue("@CardID", cardID);
-                                                                            command5.ExecuteNonQuery();
+
+                                                                            double afterWithdraw = doubleCurrentBalance - withdrawAmount;
+                                                                            Console.WriteLine("Please take the money, your new balance is RM " + afterWithdraw);
+
+                                                                            using (SQLiteCommand command5 = new SQLiteCommand(updateBalance, connection))
+                                                                            {
+                                                                                command5.Parameters.AddWithValue("@newBalance", afterWithdraw);
+                                                                                command5.Parameters.AddWithValue("@CardID", cardID);
+                                                                                command5.ExecuteNonQuery();
+                                                                            }
+
+                                                                            exitRequested = true;
                                                                         }
 
-                                                                        exitRequested = true;
+                                                                        else
+                                                                        {
+                                                                            Console.WriteLine("Invalid input, please enter value more than 0");
+                                                                        }
+
                                                                     }
 
                                                                     else
                                                                     {
-                                                                        Console.WriteLine("Invalid input, please enter value more than 0");
+                                                                        Console.WriteLine("Insufficient amount! , your balance is only " + currentBalance);
                                                                     }
-
 
                                                                 }
                                                                 else
